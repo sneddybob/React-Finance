@@ -6,7 +6,7 @@ class Navbar extends Component {
         this.state = {
             allSymbols : [],
             searchValue : "",
-            matchedSymbols : []
+            
         }
     }
     componentDidMount(){
@@ -25,12 +25,16 @@ class Navbar extends Component {
         this.setState(state => {return {searchValue: searchValue }});        
         var matchedSymbols = this.state.allSymbols.filter(function(e) { return e.symbol.toLowerCase() === searchValue || e.name.toLowerCase().indexOf(searchValue) >= 0 });
 
-        this.setState(state => {return {matchedSymbols: matchedSymbols }});
+        if(this.props.hasOwnProperty('setMatchedSymbols')){
+          this.props.setMatchedSymbols(matchedSymbols);
+      }
+
+        
     }
     
   
     render() {
-        var counter = this.state.matchedSymbols.length; 
+         
     return (
       <nav className="navbar sticky-top navbar-expand-lg navbar-light bg-light">
       <a className="navbar-brand" href="/">React-Finance</a>
@@ -38,7 +42,7 @@ class Navbar extends Component {
         <span className="navbar-toggler-icon"></span>
       </button>
       <div className="collapse navbar-collapse" id="navbarNav">
-        <ul className="navbar-nav">
+        <ul className="navbar-nav mr-auto">
           <li className="nav-item active">
             <a className="nav-link" href="/">Home <span className="sr-only">(current)</span></a>
           </li>
@@ -51,10 +55,10 @@ class Navbar extends Component {
           
         </ul>
         <form className="form-inline" onSubmit={e => this.searchOnSubmit(e)}>
-    <input name ="search" list = "symbols" className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
-     <span className="input-group-text" id="basic-addon1">Number of results {counter}</span>
+    <input name ="search" list = "symbols" className="form-control mr-sm-4" type="search" placeholder="Search" aria-label="Search"/>
+     <span className="input-group-text" id="basic-addon1">Number of results : {this.props.matchedSymbols.length}</span>
     <datalist id="symbols">
-    {this.state.matchedSymbols.map(function(e){return <option key={e.symbol} value={e.symbol}>{e.name}</option> })}
+    {this.props.matchedSymbols.map(function(e){return <option key={e.symbol} value={e.symbol}>{e.name}</option> })}
     </datalist>
     <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>

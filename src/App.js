@@ -1,31 +1,28 @@
 import React, { Component } from 'react';
-import logo from './logo.png';
-import './App.css';
+import Home from './home';
 import Template from './template';
 import Navbar from './navbar';
 
 class App extends Component {
+  
+  constructor(){
+    super();
+    this.state = {
+       
+        matchedSymbols : []
+    }
+}
+  
+setMatchedSymbols = (symbols) => {
+ this.setState({matchedSymbols : symbols});
+}
   render() {
     return (
-      <div><Navbar/>
+   
       <div className="App">
-        <header className="App-header">
-        
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          <Template />
-        </header>
-      </div></div>
+      <Navbar matchedSymbols={this.state.matchedSymbols} setMatchedSymbols={this.setMatchedSymbols}/>
+      <Home />
+       </div>
     );
   }
 }
