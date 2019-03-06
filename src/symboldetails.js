@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
 import GChart from './GChart'
+import Company from './Company';
+import News from './News';
+import Quote from './Quote';
+import {NavLink} from 'react-router-dom';
+
+
 
 class SymbolDetails extends Component {
     constructor(){
@@ -33,70 +39,32 @@ class SymbolDetails extends Component {
     
 
     return (
-      <div className="m-1 p-4 bg-dark text-light" >
-      {!this.state.loaded ? <progress></progress> : <div className="row">
-          
-          <div className="col-6">
-          <h1>{this.state.data.companyName}</h1>
-          <p>{this.state.data.description}</p>
-          <dl>
-              <dt>Industry</dt>
-              <dd>{this.state.data.industry}</dd>
-              <dt>Sector</dt>
-              <dd>{this.state.data.sector}</dd>
-              <dt>CEO</dt>
-              <dd>{this.state.data.CEO}</dd>
-              <dt>Exchange</dt>
-              <dd>{this.state.data.exchange}</dd>
-              
-
-
-
-          </dl></div>
-          <div className= "col-6 container-fluid"><GChart/></div>
-          
-          
-          
-          <div className="col-6">
-          
-              <h2>Quote</h2>
-              
-              <p>Today's High : ${this.state.quote.high}</p>
-              <p>Today's Low : ${this.state.quote.low}</p>
-              <p>Closing Price : ${this.state.quote.close}</p>
-              <p>52 Week High : ${this.state.quote.week52High}</p>
-              <p>52 Week Low : {this.state.quote.week52Low}</p>
-              
-
+        <div className="m-1 p-4 bg-dark text-light" >
+        {!this.state.loaded ? <progress></progress> : this.props.showFullDetail ? <div>
+            <div className="row">
+              <div className="col">
+                  <Company data={this.state.data} />
+                  <Quote data={this.state.quote} />
+              </div>
+                  
+              <div className="col">
+                  <News data={this.state.news} />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col">
+                  <GChart data={this.state.chart} />
+              </div>
+            </div>
+          </div> : 
+          <div>
+              <Company data={this.state.data} />
+              <NavLink className="btn btn-block btn-primary" style={{whiteSpace:"normal"}} to={"/details/" + this.props.symbol.symbol }>{this.props.symbol.name}</NavLink>
           </div>
-              
-
-          {this.state.news && this.state.news.length > 0 ? 
-          
-          <div className="col-10">
-          
-              <h2>News</h2>
-              {this.state.news.map(function(e, i){return <div key={i}>
-              <blockquote>
-                  <img src={e.image} />
-                  <h3><a href={e.url}>{e.headline}</a></h3>
-                  <p>{e.summary}</p>
-                  <p>{e.related}</p>
-                  <cite>{e.source} @ {e.datetime}</cite>
-              </blockquote>
-              </div>})}
-
-          </div> :""}
-      </div>
-        
-    
-    
+      }
+      </div>);
     }
-      {this.props.showFullDetail ? "" : <a className="btn btn-block btn-primary" style={{whiteSpace:"normal"}} href={"/details/" + this.props.symbol.symbol }>{this.props.symbol.name}</a>}
-      
-      </div>
-    );
   }
-}
+  
 
 export default SymbolDetails;

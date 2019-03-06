@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import {NavLink} from 'react-router-dom';
+import { connect } from 'react-redux'
+import { exampleAction, myAction } from './actions';
+
 
 class Navbar extends Component {
     constructor(){
@@ -19,15 +23,22 @@ class Navbar extends Component {
     }
 
     searchOnSubmit = function (e) {
+        console.log(e);
         e.preventDefault();
+        
         var searchValue = document.getElementsByName('search')[0].value.toLowerCase();
-      
+        this.props.exampleAction(searchValue);
+        
         this.setState(state => {return {searchValue: searchValue }});        
         var matchedSymbols = this.state.allSymbols.filter(function(e) { return e.symbol.toLowerCase() === searchValue || e.name.toLowerCase().indexOf(searchValue) >= 0 });
 
-        if(this.props.hasOwnProperty('setMatchedSymbols')){
-          this.props.setMatchedSymbols(matchedSymbols);
-      }
+        
+          this.props.myAction(matchedSymbols);
+          console.log(matchedSymbols);
+          if(this.props.hasOwnProperty('setMatchedSymbols')){
+            this.props.setMatchedSymbols(matchedSymbols);
+        }
+  
 
         
     }
@@ -44,10 +55,10 @@ class Navbar extends Component {
       <div className="collapse navbar-collapse" id="navbarNav">
         <ul className="navbar-nav mr-auto">
           <li className="nav-item active">
-            <a className="nav-link" href="/">Home <span className="sr-only">(current)</span></a>
+            <NavLink className="nav-link" to="/">Home <span className="sr-only">(current)</span></NavLink>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/">Stock Symbols</a>
+            <NavLink className="nav-link" to="/search">Stock Symbols</NavLink>
           </li>
           <li className="nav-item">
             <a className="nav-link" href="/">Compare Symbols</a>
@@ -55,6 +66,7 @@ class Navbar extends Component {
           
         </ul>
         <form className="form-inline" onSubmit={e => this.searchOnSubmit(e)}>
+      
     <input name ="search" list = "symbols" className="form-control mr-sm-4" type="search" placeholder="Search" aria-label="Search"/>
      <span className="input-group-text" id="basic-addon1">Number of results : {this.props.matchedSymbols.length}</span>
     <datalist id="symbols">
@@ -68,6 +80,26 @@ class Navbar extends Component {
     );
     
   }
+  
+}
+const mapStateToProps = (state) => {
+  return {
+   example: state.exampleReducer,
+   matched: state.matchedSymbolReducer 
+  }
 }
 
-export default Navbar;
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+      exampleAction: (change) => {
+        dispatch(exampleAction(change))
+      },
+       myAction: (symbol) =>{
+        dispatch(myAction(symbol))
+      }
+  }
+}
+//Instead of exporting a component, I export a "connected component"
+//Each connected component has functions that explain how the component
+//interacts with the store
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
