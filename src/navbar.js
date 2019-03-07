@@ -1,48 +1,28 @@
 import React, { Component } from 'react';
-import {NavLink} from 'react-router-dom';
+import {NavLink, withRouter} from 'react-router-dom';
 import { connect } from 'react-redux'
-import { exampleAction, myAction } from './actions';
+import { exampleAction, loadAllSymbols } from './actions';
 
 
 class Navbar extends Component {
-    constructor(){
-        super();
-        this.state = {
-            allSymbols : [],
-            searchValue : "",
-            
-        }
-    }
-    componentDidMount(){
-        fetch('https://api.iextrading.com/1.0/ref-data/symbols').then((response) => {
-            response.json().then((data) =>{
-                //Setting state on a component should kick-off the update lifecycle
-                this.setState(state => {return {allSymbols: data }});
-            })
-        })
-    }
-
-    searchOnSubmit = function (e) {
-        console.log(e);
-        e.preventDefault();
-        
-        var searchValue = document.getElementsByName('search')[0].value.toLowerCase();
-        this.props.exampleAction(searchValue);
-        
-        this.setState(state => {return {searchValue: searchValue }});        
-        var matchedSymbols = this.state.allSymbols.filter(function(e) { return e.symbol.toLowerCase() === searchValue || e.name.toLowerCase().indexOf(searchValue) >= 0 });
-
-        
-          this.props.myAction(matchedSymbols);
-          console.log(matchedSymbols);
-          if(this.props.hasOwnProperty('setMatchedSymbols')){
-            this.props.setMatchedSymbols(matchedSymbols);
-        }
-  
-
-        
-    }
     
+    componentDidMount(){
+      if(this.props.allSymbols.length === 0){
+          fetch('https://api.iextrading.com/1.0/ref-data/symbols')
+          .then(response => response.json()
+              .then(data => 
+                  this.props.loadAllSymbols(data)
+          ))
+      }
+  }
+
+  searchOnSubmit = async function (e) {
+    e.preventDefault();
+    var searchValue = document.getElementsByName('search')[0].value.toLowerCase();
+    this.props.exampleAction(searchValue);
+    this.props.history.push('/search/' + searchValue);
+}
+   
   
     render() {
          
@@ -61,16 +41,16 @@ class Navbar extends Component {
             <NavLink className="nav-link" to="/search">Stock Symbols</NavLink>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/">Compare Symbols</a>
+            <a className="nav-link" href="/watched">Watched Symbols</a>
           </li>
           
         </ul>
         <form className="form-inline" onSubmit={e => this.searchOnSubmit(e)}>
       
     <input name ="search" list = "symbols" className="form-control mr-sm-4" type="search" placeholder="Search" aria-label="Search"/>
-     <span className="input-group-text" id="basic-addon1">Number of results : {this.props.matchedSymbols.length}</span>
+     
     <datalist id="symbols">
-    {this.props.matchedSymbols.map(function(e){return <option key={e.symbol} value={e.symbol}>{e.name}</option> })}
+    {this.props.allSymbols.map(function(e){return <option key={e.symbol} value={e.symbol}>{e.name}</option> })}
     </datalist>
     <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
@@ -85,7 +65,7 @@ class Navbar extends Component {
 const mapStateToProps = (state) => {
   return {
    example: state.exampleReducer,
-   matched: state.matchedSymbolReducer 
+   allSymbols: state.allSymbolReducer
   }
 }
 
@@ -94,12 +74,13 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       exampleAction: (change) => {
         dispatch(exampleAction(change))
       },
-       myAction: (symbol) =>{
-        dispatch(myAction(symbol))
-      }
+       
+      loadAllSymbols: (symbols) =>{
+        dispatch(loadAllSymbols(symbols))
+    }
   }
 }
 //Instead of exporting a component, I export a "connected component"
 //Each connected component has functions that explain how the component
 //interacts with the store
-export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Navbar));

@@ -1,4 +1,5 @@
-import { SET_MATCHED_SYMBOLS } from '../actions'
+import { WATCHED_STOCKS } from '../actions'
+
 
 //Reducers are pure functions - the first parameter is the "state" object
 //which will need to be the same type of object that eventually gets returned.
@@ -7,10 +8,11 @@ import { SET_MATCHED_SYMBOLS } from '../actions'
 //an event is dispatched from a connected component.
 
 
-function matchedSymbolsReducer(state = [], action){
+function watchReducer(state = [], action){
     switch(action.type){
-        case SET_MATCHED_SYMBOLS:{
-            return action.symbol
+        case WATCHED_STOCKS:{
+            state.push(action.watch);
+            return state;
         }
         default: {
             return state;
@@ -19,4 +21,5 @@ function matchedSymbolsReducer(state = [], action){
     
 }
 
-export default matchedSymbolsReducer;
+
+export default watchReducer;

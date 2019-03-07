@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
-
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux'
 class Company extends Component {
   render() {
     return (
-      <div><h1>{this.props.data.companyName}</h1>
+      <div>
+      <h1>{this.props.data.companyName}</h1>
+      <div className="mx-auto" style={{width:"100%"}}>
+      <button type="button" className="btn btn-outline-danger btn-sm" onClick={watchClickedStock}>
+      Watch
+      </button></div>
       <p>{this.props.data.description}</p>
       <dl>
           <dt>Industry</dt>
