@@ -1,15 +1,26 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux'
+import { watchStocks, removeStocks } from './actions';
+//import watchReducer from './reducers/watchReducer'
+
+
 class Company extends Component {
+  
+  
+
+  
   render() {
+
+   
+
+
     return (
       <div>
       <h1>{this.props.data.companyName}</h1>
       <div className="mx-auto" style={{width:"100%"}}>
-      <button type="button" className="btn btn-outline-danger btn-sm" onClick={watchClickedStock}>
-      Watch
-      </button></div>
+     
+      </div>
       <p>{this.props.data.description}</p>
       <dl>
           <dt>Industry</dt>
@@ -29,4 +40,5 @@ class Company extends Component {
   }
 }
 
-export default Company;
+export default (Company);
+

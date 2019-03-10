@@ -5,18 +5,31 @@ import { exampleAction, loadAllSymbols } from './actions';
 
 
 class Navbar extends Component {
-    
-    componentDidMount(){
-      if(this.props.allSymbols.length === 0){
-          fetch('https://api.iextrading.com/1.0/ref-data/symbols')
-          .then(response => response.json()
-              .then(data => 
-                  this.props.loadAllSymbols(data)
-          ))
-      }
-  }
+  constructor(){
+    super();
+    this.state = {
+        matchedSymbols: [],
+    }
+}
+componentDidMount(){
+    if(this.props.allSymbols.length === 0){
+        fetch('https://api.iextrading.com/1.0/ref-data/symbols')
+        .then(response => response.json()
+            .then(data => 
+                this.props.loadAllSymbols(data)
+        ))
+    }
+}
 
-  searchOnSubmit = async function (e) {
+handleKeyUp = async function(e){
+    var searchValue = e.target.value.toLowerCase();
+
+    var matchedSymbols = this.props.allSymbols.filter(function (e) { return e.symbol.toLowerCase() === searchValue || e.name.toLowerCase().indexOf(searchValue) >= 0 }).slice(0, 10);
+    this.setState({matchedSymbols, selectVisible: true})
+}
+
+
+searchOnSubmit = async function (e) {
     e.preventDefault();
     var searchValue = document.getElementsByName('search')[0].value.toLowerCase();
     this.props.exampleAction(searchValue);
@@ -47,10 +60,10 @@ class Navbar extends Component {
         </ul>
         <form className="form-inline" onSubmit={e => this.searchOnSubmit(e)}>
       
-    <input name ="search" list = "symbols" className="form-control mr-sm-4" type="search" placeholder="Search" aria-label="Search"/>
+        <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search" list="symbols" onKeyUp={e => this.handleKeyUp(e)} />
      
     <datalist id="symbols">
-    {this.props.allSymbols.map(function(e){return <option key={e.symbol} value={e.symbol}>{e.name}</option> })}
+    {this.state.matchedSymbols.map(function (e) { return <option key={e.symbol} value={e.symbol}>{e.name}</option> })}
     </datalist>
     <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>

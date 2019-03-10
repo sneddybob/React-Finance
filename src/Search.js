@@ -12,6 +12,7 @@ import { connect } from 'react-redux'
 class Search extends Component {
   render() {
     var searchValue = this.props.match.params.term;
+    
     var matchedSymbols = [];
     if(searchValue !== ''){
       matchedSymbols = this.props.allSymbols.filter(function (e) { return e.symbol.toLowerCase() === searchValue || e.name.toLowerCase().indexOf(searchValue) >= 0 }).slice(0, 10);

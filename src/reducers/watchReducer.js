@@ -1,4 +1,5 @@
 import { WATCHED_STOCKS } from '../actions'
+import { REMOVE_STOCKS } from '../actions'
 
 
 //Reducers are pure functions - the first parameter is the "state" object
@@ -11,15 +12,35 @@ import { WATCHED_STOCKS } from '../actions'
 function watchReducer(state = [], action){
     switch(action.type){
         case WATCHED_STOCKS:{
+        
+        
+        
+            if(!state.hasOwnProperty(action.watch.symbol)){
             state.push(action.watch);
-            return state;
+                return state;
+              
+            }
+        
+            if(state.hasOwnProperty(action.watch.symbol)) {return state}
+         
         }
+        
+
+        case REMOVE_STOCKS:{
+            state.pop(action.slice);
+            return state;
+            }
         default: {
             return state;
+            }
         }
-    }
     
 }
 
+const mapStateToProps = (state) => {
+    return {
+     watch: state.watchReducer 
+    }
+  }
 
 export default watchReducer;

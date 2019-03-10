@@ -4,6 +4,7 @@ import Company from './Company';
 import News from './News';
 import Quote from './Quote';
 import {NavLink} from 'react-router-dom';
+import AddToWatch from './AddToWatch';
 
 
 
@@ -41,11 +42,13 @@ class SymbolDetails extends Component {
     return (
         <div className="m-1 p-4 bg-dark text-light" >
         {!this.state.loaded ? <progress></progress> : this.props.showFullDetail ? <div>
+            <AddToWatch data={this.state.data} />
             <div className="row">
               <div className="col">
               
                   <Company data={this.state.data} />
                   <Quote data={this.state.quote} />
+                  
               </div>
                   
               <div className="col">

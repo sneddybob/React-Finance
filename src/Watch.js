@@ -1,23 +1,33 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
+import { watchStocks } from './actions';
+import { Company } from './Company';
+import SymbolDetails from './symboldetails';
+
 
 class Watch extends Component {
+  
+  
   render() {
 
-        var watchedStocksArray = [];
+        
+
         
 
 
     return (
-      <div>Here lies your component called Watch</div>
+      <div>
+      ugh
+      </div>
     );
   }
 }
 
 const mapStateToProps = (state) => {
     return {
-     allSymbols: state.allSymbolReducer 
+     allSymbols: state.allSymbolReducer,
+     watch: state.watchReducer 
     }
   }
   
