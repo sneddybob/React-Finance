@@ -10,27 +10,30 @@ class addtoWatch extends Component {
     
     watchStocksAdd = async function (e) {      
         var addStock = this.props.data;
-        
-        this.props.watchStocks(addStock);
+        if(this.props.watch.indexOf(addStock) === -1){
+        this.props.watchStocks(addStock);}
+        else if(this.props.watch.indexOf(addStock) > -1){
+          console.log("Fucker!")
+        }
         
           
       }
       watchStocksRemove = async function (e) {      
         var removeStock = this.props.data;
-       
+       if(this.props.watch.indexOf(removeStock)>-1){
         
-        this.props.removeStocks(removeStock);}
+        this.props.removeStocks(removeStock);
+       }
+      }
   
   render() {
-
-        
-
-        
+    
 
 
     return (
         <div>
-        {this.props.data.hasOwnProperty(this.props.data) ?  <div>
+        {this.props.watch.indexOf(this.props.data) !== -1 ?  <div>
+        
         <button id="remove" type="button" className="btn btn-outline-danger btn-sm" onClick={e => this.watchStocksRemove(e)}>
         Remove
         </button> </div> :<div>
@@ -38,13 +41,14 @@ class addtoWatch extends Component {
         Watch
         </button>
         </div>}</div>
+        
     );
   
 }
 }
 const mapStateToProps = (state) => {
     return {
-     allSymbols: state.allSymbolReducer,
+     
      watch: state.watchReducer 
     }
   }

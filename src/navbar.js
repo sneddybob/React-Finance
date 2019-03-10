@@ -54,7 +54,7 @@ searchOnSubmit = async function (e) {
             <NavLink className="nav-link" to="/search">Stock Symbols</NavLink>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/watched">Watched Symbols</a>
+            <NavLink className="nav-link" to="/watched">Watched Symbols</NavLink>
           </li>
           
         </ul>

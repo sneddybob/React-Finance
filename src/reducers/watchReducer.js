@@ -13,21 +13,15 @@ function watchReducer(state = [], action){
     switch(action.type){
         case WATCHED_STOCKS:{
         
-        
-        
-            if(!state.hasOwnProperty(action.watch.symbol)){
             state.push(action.watch);
                 return state;
               
-            }
-        
-            if(state.hasOwnProperty(action.watch.symbol)) {return state}
-         
+           
         }
         
 
         case REMOVE_STOCKS:{
-            state.pop(action.slice);
+            state.slice(action.slice);
             return state;
             }
         default: {
