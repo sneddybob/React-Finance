@@ -24,7 +24,7 @@ function watchReducer(state = [], action){
             for(var i = 0; i<state.length; i++){
                 if(state[i].symbol === action.slice.symbol){
                 console.log(state[i].symbol);
-            state.slice(i,1);
+            state.splice(i,1);
                 }
             console.log(state);
             console.log(action.slice.symbol);

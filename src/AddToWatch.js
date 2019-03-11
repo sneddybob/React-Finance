@@ -12,9 +12,8 @@ class addtoWatch extends Component {
         var addStock = this.props.data;
         if(this.props.watch.indexOf(addStock) === -1){
         this.props.watchStocks(addStock);}
-        else if(this.props.watch.indexOf(addStock) > -1){
-          this.props.removeStocks(addStock);
-        }
+       // else if(this.props.watch.indexOf(addStock) > -1){
+         // this.props.removeStocks(addStock);        }
         //console.log(this.props.watch[0].symbol);
         //console.log(this.props.data.symbol);
         
@@ -22,10 +21,10 @@ class addtoWatch extends Component {
       }
       watchStocksRemove = async function (e) {      
         var removeStock = this.props.data;
-       if(this.props.watch[0].symbol === this.props.data.symbol){
-        
+       
         this.props.removeStocks(removeStock);
-       }
+         
+       
       }
   
   render() {
