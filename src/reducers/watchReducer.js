@@ -21,9 +21,16 @@ function watchReducer(state = [], action){
         
 
         case REMOVE_STOCKS:{
-            state.slice(action.slice);
+            for(var i = 0; i<state.length; i++){
+                if(state[i].symbol === action.slice.symbol){
+                console.log(state[i].symbol);
+            state.slice(i,1);
+                }
+            console.log(state);
+            console.log(action.slice.symbol);
             return state;
             }
+        }
         default: {
             return state;
             }

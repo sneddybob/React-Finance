@@ -3,9 +3,9 @@ import GChart from './GChart'
 import Company from './Company';
 import News from './News';
 import Quote from './Quote';
-import {NavLink} from 'react-router-dom';
+import {NavLink, withRouter} from 'react-router-dom';
 import AddToWatch from './AddToWatch';
-
+import { connect } from 'react-redux';
 
 
 class SymbolDetails extends Component {
@@ -41,8 +41,8 @@ class SymbolDetails extends Component {
 
     return (
         <div className="m-1 p-4 bg-dark text-light" >
-        {!this.state.loaded ? <progress></progress> : this.props.showFullDetail ? <div>
-            <AddToWatch data={this.state.data} />
+        {!this.state.loaded ? <progress></progress> : this.props.showFullDetail ? <div><h5>
+            <AddToWatch data={this.state.data} /></h5>
             <div className="row">
               <div className="col">
               
@@ -69,6 +69,9 @@ class SymbolDetails extends Component {
       </div>);
     }
   }
-  
+  const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+    }
+}
 
-export default SymbolDetails;
+export default connect(mapDispatchToProps)(withRouter(SymbolDetails));

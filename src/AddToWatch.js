@@ -13,14 +13,16 @@ class addtoWatch extends Component {
         if(this.props.watch.indexOf(addStock) === -1){
         this.props.watchStocks(addStock);}
         else if(this.props.watch.indexOf(addStock) > -1){
-          console.log("Fucker!")
+          this.props.removeStocks(addStock);
         }
+        //console.log(this.props.watch[0].symbol);
+        //console.log(this.props.data.symbol);
         
           
       }
       watchStocksRemove = async function (e) {      
         var removeStock = this.props.data;
-       if(this.props.watch.indexOf(removeStock)>-1){
+       if(this.props.watch[0].symbol === this.props.data.symbol){
         
         this.props.removeStocks(removeStock);
        }
@@ -32,12 +34,12 @@ class addtoWatch extends Component {
 
     return (
         <div>
-        {this.props.watch.indexOf(this.props.data) !== -1 ?  <div>
+        {this.props.watch.length > 0 && this.props.watch[0].symbol === this.props.data.symbol ?  <div>
         
-        <button id="remove" type="button" className="btn btn-outline-danger btn-sm" onClick={e => this.watchStocksRemove(e)}>
+        <button id="remove" type="button" className="btn btn-outline-danger btn-sm m-2" onClick={e => this.watchStocksRemove(e)}>
         Remove
         </button> </div> :<div>
-        <button id="watch" type="button" className="btn btn-outline-danger btn-sm m-5" onClick={e => this.watchStocksAdd(e)}>
+        <button id="watch" type="button" className="btn btn-outline-danger btn-sm m-2" onClick={e => this.watchStocksAdd(e)}>
         Watch
         </button>
         </div>}</div>
